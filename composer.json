@@ -1,0 +1,7 @@
+{
+  "require": {
+    "swiftmailer/swiftmailer": "@stable",
+    "vlucas/phpdotenv": "1.0.9",
+    "sendgrid/smtpapi": "0.0.1"
+  }
+}

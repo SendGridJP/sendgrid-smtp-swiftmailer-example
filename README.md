@@ -1,7 +1,7 @@
 #sendgrid-smtp-swiftmailer-example
 
 ========================
- 本コードはSendGridのSMTPサービスの利用サンプルです。
+ 本コードはSwiftMailer(PHP)を使ってSendGrid(SMTP)経由でメールを送信するサンプルです。
 
 ## 使い方
 

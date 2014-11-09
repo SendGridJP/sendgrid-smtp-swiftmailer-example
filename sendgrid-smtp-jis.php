@@ -7,6 +7,14 @@ $sendgrid_password = $_ENV["SENDGRID_PASSWORD"];
 $from              = $_ENV["FROM"];
 $tos               = explode(",", $_ENV["TOS"]);
 
+// Specivy encoding
+Swift::init(function() {
+  Swift_DependencyContainer::getInstance()
+    ->register('mime.qpheaderencoder')
+    ->asAliasOf('mime.base64headerencoder');
+  Swift_Preferences::getInstance()->setCharset('iso-2022-jp');
+});
+
 // create a message
 $transport = Swift_SmtpTransport::newInstance("smtp.sendgrid.net", 587, "tls")
   ->setUsername($sendgrid_username)
@@ -14,7 +22,7 @@ $transport = Swift_SmtpTransport::newInstance("smtp.sendgrid.net", 587, "tls")
 $mailer = Swift_Mailer::newInstance($transport);
 $attachment = Swift_Attachment::fromPath("./gif.gif");
 $message = Swift_Message::newInstance()
-  ->setSubject("[sendgrid-smtp-swiftmailer-example] フクロウのお名前は fullname さん")
+  ->setSubject("[sendgrid-smtp-swiftmailer-example] フクロウのお名前はfullnameさん")
   ->setTo("dummy@test.com")
   ->setFrom($from)
   ->setBody("familynameさんは何をしていますか？\r\n 彼はplaceにいます。", "text/plain")
@@ -31,7 +39,13 @@ $smtpapi->addSection("office", "中野");
 $smtpapi->addSection("home", "目黒");
 $smtpapi->addCategory("Category1");
 $headers = $message->getHeaders();
-$headers->addTextHeader("x-smtpapi", $smtpapi->jsonString());
+
+$decoded = preg_replace_callback('|\\\\u([0-9a-f]{4})|i', function($matched){
+    return mb_convert_encoding(pack('H*', $matched[1]), 'UTF-8', 'UTF-16');
+}, $smtpapi->jsonString());
+$iso2022jp = mb_convert_encoding($decoded, "ISO-2022-JP", "UTF-8");
+$base64 = base64_encode($iso2022jp);
+$headers->addTextHeader("x-smtpapi", "=?ISO-2022-JP?B?".$base64."?=");
 
 // send the message
 $result = $mailer->send($message);

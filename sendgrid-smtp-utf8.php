@@ -35,4 +35,5 @@ $headers->addTextHeader("x-smtpapi", $smtpapi->jsonString());
 
 // send the message
 $result = $mailer->send($message);
+//echo $headers->toString();
 echo $result;

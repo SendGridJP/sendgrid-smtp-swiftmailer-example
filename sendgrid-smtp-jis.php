@@ -49,4 +49,5 @@ $headers->addTextHeader("x-smtpapi", "=?ISO-2022-JP?B?".$base64."?=");
 
 // send the message
 $result = $mailer->send($message);
+//echo $headers->toString();
 echo $result;

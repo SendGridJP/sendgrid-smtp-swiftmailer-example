@@ -40,9 +40,10 @@ $smtpapi->addSection("home", "目黒");
 $smtpapi->addCategory("Category1");
 $headers = $message->getHeaders();
 
-$decoded = preg_replace_callback('|\\\\u([0-9a-f]{4})|i', function($matched){
-    return mb_convert_encoding(pack('H*', $matched[1]), 'UTF-8', 'UTF-16');
-}, $smtpapi->jsonString());
+$decoded = $smtpapi->jsonString(JSON_UNESCAPED_UNICODE);
+// $decoded = preg_replace_callback('|\\\\u([0-9a-f]{4})|i', function($matched){
+//     return mb_convert_encoding(pack('H*', $matched[1]), 'UTF-8', 'UTF-16');
+// }, $smtpapi->jsonString());
 $iso2022jp = mb_convert_encoding($decoded, "ISO-2022-JP", "UTF-8");
 $base64 = base64_encode($iso2022jp);
 $headers->addTextHeader("x-smtpapi", "=?ISO-2022-JP?B?".$base64."?=");

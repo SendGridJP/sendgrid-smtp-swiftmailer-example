@@ -11,8 +11,14 @@ cd sendgrid-smtp-swiftmailer-example
 cp .env.example .env
 # .envファイルを編集してください
 bundle install
-php sendgrid-smtp-jis.php
-php sendgrid-smtp-utf8.php
+# テキストメールを送る(JIS)
+php swiftmailer-text-jis.php
+# テキストメールを送る(UTF-8)
+php swiftmailer-text-utf8.php
+# HTMLメールを送る(JIS)
+php swiftmailer-html-jis.php
+# HTMLメールを送る(UTF-8)
+php swiftmailer-html-utf8.php
 ```
 
 ## .envファイルの編集
@@ -22,9 +28,11 @@ php sendgrid-smtp-utf8.php
 SENDGRID_USERNAME=your_username
 SENDGRID_PASSWORD=your_password
 TOS=you@youremail.com,friend1@friendemail.com,friend2@friendemail.com
+NAMES=名前1,名前2,名前3,名前4
 FROM=you@youremail.com
 ```
 SENDGRID_USERNAME:SendGridのユーザ名を指定してください。  
 SENDGRID_PASSWORD:SendGridのパスワードを指定してください。  
 TOS:宛先をカンマ区切りで指定してください。  
+NAMES:宛先毎の宛名をカンマ区切りで指定してください。
 FROM:送信元アドレスを指定してください。  
